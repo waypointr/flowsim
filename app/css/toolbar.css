@@ -1,0 +1,29 @@
+#toolbar{
+	position: absolute;
+	left: 0px;
+	top: 15%;
+
+	width:75px; height:400px;
+	padding: 5px;
+	background-color: #ddd;
+
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+#toolbar[mode=play]{
+	display: none;
+}
+
+.toolbar_button{
+	width:60px; height:60px;
+	margin: 5px;
+	border: 2px solid #ddd;
+	cursor: pointer;
+	background-size: 100% 100%;
+}
+.toolbar_button[selected=yes]{
+	border: 2px solid #888;
+	background-color: #999;
+}

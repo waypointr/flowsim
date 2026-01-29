@@ -1,0 +1,29 @@
+services:
+    vsm:
+        container_name: vsm
+        build: .docker/vsm
+        ports:
+            - 8080:8080
+        volumes:
+            - .:/var/www/vsm
+        healthcheck:
+            test: curl --fail http://vsm:8080 || exit 1
+            interval: 20s
+            retries: 5
+            start_period: 60s
+            timeout: 10s
+    nginx:
+        container_name: nginx
+        build: .docker/nginx
+        ports:
+            - 80:80
+        links:
+            - vsm
+        depends_on:
+            - vsm
+        healthcheck:
+            test: curl --fail http://localhost || exit 1
+            interval: 20s
+            retries: 5
+            start_period: 60s
+            timeout: 10s

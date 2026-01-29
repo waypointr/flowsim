@@ -1,0 +1,139 @@
+#playbar{
+	position: absolute;
+	bottom: 15px;
+	left: calc(50% - 100px);
+    user-select: none;
+}
+#playbar[fullscreen=yes]{
+	left: calc(50% - 125px); /* 50% - half of (playbar width)*/
+}
+#playbar button:hover{
+	background: #ddd;
+}
+#playbar button:disabled:hover{
+	background: none;
+}
+
+
+/* Play Controls CSS settings */
+#playControls {
+    position: absolute;
+    display: flex;
+    width: fit-content;
+    height: fit-content;
+    margin: 0px 5px;
+	bottom: 10px;
+    background: white;
+}
+#playControls button{
+	color: black;
+    background: none;
+    border: none;
+    font-size: 25pt;
+    font-weight: bold;
+}
+#playControls button:disabled {
+    color: gray;
+    background-color: white;
+    border: none;
+    font-size: 25pt;
+    font-weight: bold;
+}
+
+
+
+/* Speed Slider settings */
+#slider {
+    bottom: 27px;
+    position: absolute;
+    width: fit-content;
+    height: 20px;
+    right: 85px;
+    background-color: white;
+    display: flex;
+    align-items: center;
+}
+#speedSlider{
+    width: 180px;
+    height: 3px;
+    margin: 0px 10px;
+    background: rgb(41, 35, 35);
+    outline: none;
+    appearance: none;
+    border-radius: 15px;
+}
+#slider img{
+    width: 20px;
+    height: 20px;
+    background-color: white;
+}
+#sliderImgLeft {
+    position: inherit;
+    left: -20px;
+}
+#sliderImgRight {
+    position: inherit;
+    left: 195px;
+    transform: scaleX(-1);
+}
+/* The circle on the slider */
+#speedSlider::-webkit-slider-thumb {
+    -webkit-appearance: none; 
+    appearance: none;
+    width: 15px; 
+    height: 15px; 
+    background: black;
+    cursor: pointer; 
+    border-radius: 20px;
+}
+  
+#speedSlider::-moz-range-thumb {
+    width: 15px; 
+    height: 15px; 
+    background: black; 
+    cursor: pointer; 
+    border-radius: 20px;
+}
+
+
+
+/* Zoom CSS settings */
+#zoom {
+    position: absolute;
+    display: flex;
+	width: fit-content;
+    height: fit-content;
+    left: 200px;
+    bottom: 20px;
+    background: white;
+}
+
+#zoom button {
+    color: black;
+    background: none;
+    border: none;
+    font-size: 15pt;
+    font-weight: bold;
+    margin: 0px 2px;
+}
+
+#zoom input {
+    color: black;
+    background: none;
+    font-size: 15pt;
+    font-weight: bold;
+    margin: 0px 2px;
+    border: 2px solid white;
+}
+
+#zoom input:focus {
+    border: 2px solid black;
+}
+
+#zoomPercentage {
+    font-size: 13pt;
+    position: relative;
+    top: 4px;
+    height: fit-content;
+    width: fit-content;
+}

@@ -1,0 +1,794 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- META -->
+	<title>VSiM</title>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+	<meta charset="utf-8">
+	<link rel="icon" type="image/png" href="css/icons/favicon.png">
+	<!-- mobile don't randomly zoom -->
+	<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'/>
+	<!-- Schema.org markup for Google+ -->
+	<meta itemprop="name" content="VSiM">
+	<meta itemprop="description" content="a tool for thinking in systems">
+
+	<!-- Open Graph data -->
+	<meta property="og:title" content="VSiM">
+	<meta property="og:type" content="website">
+	<meta property="og:url" content="http://flowsim.ai">
+	<meta property="og:description" content="a tool for thinking in systems">
+
+	<!-- Bootstrap for UI standardization -->
+	<link href="css/vendor/bootstrap/bootstrap.min.css" rel="stylesheet" />
+	<link href="css/vendor/bootstrap/bootstrap-icons.css" rel="stylesheet" />
+	<script src="js/vendor/bootstrap/popper.min.js"></script>
+	<script src="js/vendor/bootstrap/bootstrap.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+
+	<!-- Fonts -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Open+Sans&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
+
+
+    <!-- Styles! -->
+	<link href="css/loopy.css" rel="stylesheet"/>
+	<link href="css/components.css" rel="stylesheet" />
+	<link href="css/playbar.css" rel="stylesheet" />
+	<link href="css/toolbar.css" rel="stylesheet" />
+	<link href="css/sidebar.css" rel="stylesheet" />
+	<link href="css/modal.css" rel="stylesheet" />
+	<link href="css/vendor/balloon/balloon.css" rel="stylesheet"/>
+</head>
+
+<body style="opacity:0" class="sidebar-open">
+
+	<!-- To display the value stream name and elapsed time -->
+	<div id="valueStreamName" class="valueStreamName"></div>
+
+	<!-- Canvas & Ink -->
+	<div id="canvasses"></div>
+
+	<img src="css/icons/FlowSimLogo.png" alt="FlowSim logo" class="logo" id="logo">
+
+	<!-- The Tools' UI -->
+	<div id="toolbar"></div>
+
+	<div id="playbar">
+		<div id="slider">
+			<img src="css/icons/turtle.png" alt="Turtle" id="sliderImgLeft">
+			<input type="range" min="0" max="7" value="3" step=".02" id="speedSlider" oninput="loopy.signalSpeed = value">
+			<img src="css/icons/rabbit.png" alt="Rabbit"  id="sliderImgRight">
+		</div>
+		<div id="playControls">
+			<button id="playButton" onclick="loopy.setMode(Loopy.MODE_PLAY)"><i class="bi bi-play-fill"></i></button>
+			<button id="pauseButton" onclick="loopy.pauseToggle()" disabled><i class="bi bi-pause"></i></button>
+			<button id="stopButton" onclick="loopy.setMode(Loopy.MODE_EDIT)" disabled><i class="bi bi-stop-fill"></i></button>
+		</div>
+		<div id="zoom">
+			<button onclick="loopy.zoom.zoomOut()"><i class="bi bi-dash"></i></button>
+			<input type="number" id="zoomInputPercentage" type="number" min="1" max="400" step="1" value="100" >
+			<span id="zoomPercentage">%</span>
+			<button onclick="loopy.zoom.zoomIn()"><i class="bi bi-plus"></i></button>
+		</div>
+	</div>
+
+	<div id="sidebar">
+		<div id="sidebar_loopy" class="scroll">
+			<div  class="menuHeader nonTextFieldMenu">Main Menu</div> 
+			<form onsubmit="return false;">
+				<div class="nonTextFieldMenu form-group">
+					<label for="valueStreamName">
+						Diagram Name
+					</label>
+					<input class="textEntries component_input " type="text" name="valueStreamNameInput" id="valueStreamNameInput"/>
+				</div>
+				<div class='form-group nonTextFieldMenu'>
+					<label for="loopyFontSelection">
+						Font Selection
+					</label>
+					<div class="component_dropdown " name="loopyFontSelection">
+						<select name="loopyFontSelection" id="loopyFontSelection" class="textEntries">
+							<option value="'Comic Sans MS', cursive" style="font-family: 'Comic Sans MS', cursive;">Comic Sans</option>
+							<option value="Courier, monospace" style="font-family: Courier, monospace;">Courier</option>
+							<option value="Fredoka", style="font-family: Fredoka, sans-serif;">Fredoka</option>
+							<option value="Georgia, serif" style="font-family: Georgia, serif;">Georgia</option>
+							<option value="Gill Sans, sans-serif" style="font-family: Gill Sans, sans-serif;">Gill Sans</option>
+							<option value="Impact, Charcoal, sans-serif", style="font-family: Impact, Charcoal, sans-serif;">Impact</option>
+							<option value='"Lucida Console", Monaco, monospace' style='font-family: "Lucida Console", Monaco, monospace;'>Lucida Console</option>
+							<option value='"Palatino Linotype", Palatino, "Book Antiqua", serif' style='font-family: "Palatino Linotype", Palatino, "Book Antiqua", serif;'>Palatino Linotype</option>
+							<option value='Roboto, sans-serif', style='font-family: "Roboto", sans-serif;'>Roboto</option>
+							<option value="Tahoma, Geneva, sans-serif" style="font-family: Tahoma, Geneva, sans-serif;">Tahoma</option>
+							<option value="'Times New Roman', Times, serif" style="font-family: 'Times New Roman', Times, serif;">Times New Roman</option>
+							<option value='"Trebuchet MS", Helvetica, sans-serif' style='font-family: "Trebuchet MS", Helvetica, sans-serif;'>Trebuchet</option>
+							<option value="Verdana, Geneva, sans-serif", style="font-family: Verdana, Geneva, sans-serif;">Verdana</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group nonTextFieldMenu displayOneLine">Bottleneck Severity</div>
+				<span  class="d-inline-block" tabindex="0" data-toggle="tooltip" title="This is calculated from the workload, which is (WIP + In Queue) / Capacity.">
+					<i class="bi bi-info-circle infoIcon" style="pointer-events: none;"></i>
+				</span>
+				<div class="indicatorSpacing">
+					<img class='indicatorImage' src="../imgSrc/Indicator_Yellow.png" alt="Yellow Indicator">
+					<input type='number' class='indicatorInput number component_input textEntries' name='indicatorYellow' id="indicatorYellow">
+					<label for="indicatorYellow" class="nonTextFieldMenu"><span class="percentage">%</span> of capacity</label>
+				</div>
+				<div class="indicatorSpacing">
+					<img class='indicatorImage' src="../imgSrc/Indicator_Red_Low.png" alt="Red Low Indicator">
+					<input type='number' class='indicatorInput number component_input textEntries' name="indicatorRedLow" id='indicatorRedLow'>
+					<label for="indicatorYellow" class="nonTextFieldMenu"><span class="percentage">%</span> of capacity</label>
+				</div>
+				<div class="indicatorSpacing">
+					<img class='indicatorImage' src="../imgSrc/Indicator_Red_Medium.png" alt="Red Medium Indicator">
+					<input type='number' class='indicatorInput number component_input textEntries' name="indicatorRedMedium" id='indicatorRedMedium'>
+					<label for="indicatorYellow" class="nonTextFieldMenu"><span class="percentage">%</span> of capacity</label>
+				</div>
+				<div class="indicatorSpacing">
+					<img class='indicatorImage' src="../imgSrc/Indicator_Red_High.png" alt="Red High Indicator" id="imageRedHigh">
+					<input type='number' class='indicatorInput number component_input textEntries' name="indicatorRedHigh" id='indicatorRedHigh'>
+					<label for="indicatorYellow" class="nonTextFieldMenu"><span class="percentage">%</span> of capacity</label>
+				</div>
+				<span class="component_inputInvalidMessageHidden component_inputInvalidText" id="bottleneckMessage"></span>
+			</form>
+			<hr/>
+			Want to share your work?<br><span class='mini_button' onclick='publish("modal",["save_link"])'>Click here!</span>
+		</div>
+
+		<!-- Node sidebar properties -->
+		<div id="sidebar_node" class="advanced scroll">
+			<button class="nonTextFieldMenu component_button pinned-top" onclick="loopy.sidebar.goBackToTop();">Back to Main</button>
+			<div class="menuHeader nonTextFieldMenu" name="nodeTitleBox">Node Menu</div>
+			<form onsubmit="return false;">
+				<div class="form-group nonTextFieldMenu">
+					<label for="label">
+						Node Name
+					</label>
+					<textarea class="component_textarea textEntries " type="text" name="label" value="..." id='nodeText' rows="6"></textarea>
+				</div>
+				<div class="form-group nonTextFieldMenu">
+					<label for="nodeFontSelection">
+						Font Selection
+					</label>
+					<div class="component_dropdown " name="nodeFontSelection">
+						<select name="nodeFontSelection" id="nodeFontSelection" class="textEntries">
+							<option value="'Comic Sans MS', cursive" style="font-family: 'Comic Sans MS', cursive;">Comic Sans</option>
+							<option value="Courier, monospace" style="font-family: Courier, monospace;">Courier</option>
+							<option value="Fredoka", style="font-family: Fredoka, sans-serif;">Fredoka</option>
+							<option value="Georgia, serif" style="font-family: Georgia, serif;">Georgia</option>
+							<option value="Gill Sans, sans-serif" style="font-family: Gill Sans, sans-serif;">Gill Sans</option>
+							<option value="Impact, Charcoal, sans-serif", style="font-family: Impact, Charcoal, sans-serif;">Impact</option>
+							<option value='"Lucida Console", Monaco, monospace' style='font-family: "Lucida Console", Monaco, monospace;'>Lucida Console</option>
+							<option value='"Palatino Linotype", Palatino, "Book Antiqua", serif' style='font-family: "Palatino Linotype", Palatino, "Book Antiqua", serif;'>Palatino Linotype</option>
+							<option value='Roboto, sans-serif', style='font-family: "Roboto", sans-serif;'>Roboto</option>
+							<option value="Tahoma, Geneva, sans-serif" style="font-family: Tahoma, Geneva, sans-serif;">Tahoma</option>
+							<option value="'Times New Roman', Times, serif" style="font-family: 'Times New Roman', Times, serif;">Times New Roman</option>
+							<option value='"Trebuchet MS", Helvetica, sans-serif' style='font-family: "Trebuchet MS", Helvetica, sans-serif;'>Trebuchet</option>
+							<option value="Verdana, Geneva, sans-serif", style="font-family: Verdana, Geneva, sans-serif;">Verdana</option>
+						</select>
+					</div>
+				</div>								
+				<div class="form-group">
+					<label for="nodeFontSize" class="displayOneLine propertyLabel nonTextFieldMenu">Size</label>
+					<div class="sizeBlock displayOneLine component_dropdown  form-group" name="nodeFontSize">
+						<select name="nodeFontSize" id="nodeFontSize" class="textEntries">
+							<option value='auto'>auto</option>
+							<option value='20'>20</option>
+							<option value='24'>24</option>
+							<option value='28'>28</option>
+							<option value='32'>32</option>
+							<option value='36'>36</option>
+							<option value='40'>40</option>
+							<option value='44'>44</option>
+							<option value='48'>48</option>
+							<option value='52'>52</option>
+							<option value='56'>56</option>
+							<option value='60'>60</option>
+							<option value='64'>64</option>
+							<option value='68'>68</option>
+							<option value='72'>72</option>
+							<option value='76'>76</option>
+							<option value='80'>80</option>
+						</select>
+					</div>
+					<div class="buttonContainer displayOneLine" >
+						<div class="form-check-inline nonTextFieldMenu">
+							<input type="checkbox" class="btn-check" id="nodeBold" autocomplete="off">
+							<label class="btn bui" for="nodeBold">B</label>
+						</div>
+						<div class="form-check-inline  nonTextFieldMenu">
+							<input type="checkbox" class="btn-check" id="nodeUnderline" autocomplete="off">
+							<label class="btn bui" for="nodeUnderline"><u>U</u></label>
+						</div>
+						<div class="form-check-inline  nonTextFieldMenu">
+							<input type="checkbox" class="btn-check" id="nodeItalic" autocomplete="off">
+							<label class="btn bui" for="nodeItalic" ><i>I</i></label>
+						</div>
+					</div>
+				</div>
+
+				<div class="form-group nonTextFieldMenu">
+					<label for="hue">
+						Node Color
+					</label>
+					<div class="component_slider" name="hue">
+						<img draggable="false" class="component_slider_graphic" src="css/sliders/hue.png" alt="Color options" />
+						<img draggable="false" class="component_slider_pointer" src="css/sliders/slider_pointer_up.png" alt="Color pointer" />
+					</div>
+				</div>
+
+				<div class="form-group nonTextFieldMenu">
+					<label for="init">
+						Start Amount:  
+					</label>
+					<input class="textEntries number component_input " type="number" name="init"/>
+					<span class="percentage">%</span><span> Fill</span>
+				</div>
+
+				<div class="form-group nonTextFieldMenu">
+					<label for="size">
+						Capacity:
+					</label>
+					<input class="textEntries number component_input " type="number" name="size"/>
+					<span id="sizeUnits"> Units</span>
+					
+				</div>
+
+				<hr class="solidSidebarDivider">
+
+				<div class="form-group nonTextFieldMenu">
+					<label for="aggregationLatency">
+						Processing Time: 
+					</label>
+					<input class="textEntries number component_input " type="number" name="aggregationLatency"/>
+					<span id="latencyDays"> Days</span>
+				</div>
+				<div class="form-group nonTextFieldMenu" id="loadBalancingDiv">
+					<label for="loadBalancingRatio" id="loadBalancingLabel">
+						Outgoing Split Ratio: 
+					</label>
+					<div id="loadBalancingInput">
+						<!-- hiding 0 by default because its not populating correctly -->
+						<input class="textEntries component_input number component_input_2_digit_box " type="number" name="loadBalancingInput" style="display:none"/>
+						<input class="textEntries component_input number component_input_2_digit_box " type="number" name="loadBalancingInput0" style="display:none"/> 
+						<span class="component_input_colon" id="colon_0" style="display:none"> : </span>
+						<input class="textEntries component_input number component_input_2_digit_box " type="number" name="loadBalancingInput1" style="display:none"/>
+						<span class="component_input_colon" id="colon_1" style="display:none"> : </span>
+						<input class="textEntries component_input number component_input_2_digit_box " type="number" name="loadBalancingInput2" style="display:none"/>
+						<span class="component_input_colon" id="colon_2" style="display:none"> : </span>
+						<input class="textEntries component_input number component_input_2_digit_box " type="number" name="loadBalancingInput3" style="display:none"/>
+						<span class="component_input_colon" id="colon_3" style="display:none"> : </span>
+						<input class="textEntries component_input number component_input_2_digit_box " type="number" name="loadBalancingInput4" style="display:none"/>
+						<span class="component_input_colon" id="colon_4" style="display:none"> : </span>
+						<input class="textEntries component_input number component_input_2_digit_box " type="number" name="loadBalancingInput5" style="display:none"/>
+						<span class="component_input_colon" id="colon_5" style="display:none"> : </span>
+						<input class="textEntries component_input number component_input_2_digit_box " type="number" name="loadBalancingInput6" style="display:none"/>
+						<span class="component_input_colon" id="colon_6" style="display:none"> : </span>
+						<input class="textEntries component_input number component_input_2_digit_box " type="number" name="loadBalancingInput7" style="display:none"/>
+						<span class="component_input_colon" id="colon_7" style="display:none"> : </span>
+						<input class="textEntries component_input number component_input_2_digit_box " type="number" name="loadBalancingInput8" style="display:none"/>
+						<span class="component_input_colon" id="colon_8" style="display:none"> : </span>
+						<input class="textEntries component_input number component_input_2_digit_box " type="number" name="loadBalancingInput9" style="display:none"/>
+					</div>
+				</div>
+
+				<div class="form-group nonTextFieldMenu" id="returnRatioDiv">
+					<label for="returnRatio" id="returnRatioLabel">
+						Return Ratio (%C&A): 
+					</label>
+					<div id="return_Ratio_Input">
+						<input class="textEntries component_input number component_input_3_digit_box " type="number" name="returnRatioInput0" /> 
+						<span class="component_input_colon" id="return_ratio_per_0" >% </span>
+						<span class="component_input_colon" id="return_ratio_colon_0" >:</span>
+						<input class="textEntries component_input number component_input_3_digit_box " type="number" name="returnRatioInput1" />
+						<span class="component_input_colon" id="return_ratio_per_1" >% </span>
+						<span class="component_input_colon" id="return_ratio_colon_1" >:</span>
+						<input class="textEntries component_input number component_input_3_digit_box " type="number" name="returnRatioInput2" />
+						<span class="component_input_colon" id="return_ratio_per_2" >% </span>
+						<span class="component_input_colon" id="return_ratio_colon_2" >:</span>
+
+						<input class="textEntries component_input number component_input_3_digit_box " type="number" name="returnRatioInput3" />
+						<span class="component_input_colon" id="return_ratio_per_3" >% </span>
+						<span class="component_input_colon" id="return_ratio_colon_3" >:</span>
+						<input class="textEntries component_input number component_input_3_digit_box " type="number" name="returnRatioInput4" />
+						<span class="component_input_colon" id="return_ratio_per_4" >% </span>
+						<span class="component_input_colon" id="return_ratio_colon_4" >:</span>
+						<input class="textEntries component_input number component_input_3_digit_box " type="number" name="returnRatioInput5" />
+						<span class="component_input_colon" id="return_ratio_per_5" >% </span>
+						<span class="component_input_colon" id="return_ratio_colon_5" >:</span>
+
+						<input class="textEntries component_input number component_input_3_digit_box " type="number" name="returnRatioInput6" />
+						<span class="component_input_colon" id="return_ratio_per_6" >% </span>
+						<span class="component_input_colon" id="return_ratio_colon_6" >:</span>
+						<input class="textEntries component_input number component_input_3_digit_box " type="number" name="returnRatioInput7" />
+						<span class="component_input_colon" id="return_ratio_per_7" >% </span>
+						<span class="component_input_colon" id="return_ratio_colon_7" >:</span>
+						<input class="textEntries component_input number component_input_3_digit_box " type="number" name="returnRatioInput8" />
+						<span class="component_input_colon" id="return_ratio_per_8" >% </span>
+						<span class="component_input_colon" id="return_ratio_colon_8" >:</span>
+
+						<input class="textEntries component_input number component_input_3_digit_box " type="number" name="returnRatioInput9" />
+						<span class="component_input_colon" id="return_ratio_per_9" >% </span>
+					</div>
+				</div>
+
+				<hr class="solidSidebarDivider">
+
+				<div class="form-group nonTextFieldMenu">
+					<div class="form-group">Self Generation:</div>
+					<div class="generate form-group">
+						<span>Generate </span><input class="textEntries number component_input component_input_3_digit_box" type="number" name="generateVolume">
+						<span> <span id="generateItems">items</span> every </span><input class="textEntries number component_input component_input_5_digit_box" type="number" name="generateInterval"></input>
+						<span> <span id="generateDays">day</span>.</span>
+					</div>
+					<div class="generate form-group">
+						<span>Optional maximum work items to generate </span><input class="textEntries number component_input component_input_5_digit_box" type="number" name="generateMax"></input>
+					</div>
+				</div>
+			</form>
+			<div class = 'deleteContainer'>
+				<button class="component_button delete nonTextFieldMenu" onclick="loopy.sidebar.deleteActiveComponent();">Delete Node</button>
+			</div>
+		</div>
+
+		<!-- Edge sidebar properties -->
+		<div id="sidebar_edge" class="advanced scroll">
+			<button class="nonTextFieldMenu component_button pinned-top" onclick="loopy.sidebar.goBackToTop();">Back to Main</button>
+			<div class="menuHeader nonTextFieldMenu" name="labelTitleBox">Connector Menu</div>
+			<form onsubmit="return false;">
+				<div class="nonTextFieldMenu form-group">
+					<label for="customLabel">
+						Connector Name
+					</label>
+					<textarea class="component_textarea textEntries " type="text" name="customLabel" id="edgeText"></textarea>
+				</div>
+				<div class="form-group nonTextFieldMenu">
+					<label for="edgeFontSelection">
+						Font Selection
+					</label>
+					<div class="component_dropdown " name="edgeFontSelection">
+						<select name="edgeFontSelection" id="edgeFontSelection" class="textEntries">
+							<option value="'Comic Sans MS', cursive" style="font-family: 'Comic Sans MS', cursive;">Comic Sans</option>
+							<option value="Courier, monospace" style="font-family: Courier, monospace;">Courier</option>
+							<option value="Fredoka", style="font-family: Fredoka, sans-serif;">Fredoka</option>
+							<option value="Georgia, serif" style="font-family: Georgia, serif;">Georgia</option>
+							<option value="Gill Sans, sans-serif" style="font-family: Gill Sans, sans-serif;">Gill Sans</option>
+							<option value="Impact, Charcoal, sans-serif", style="font-family: Impact, Charcoal, sans-serif;">Impact</option>
+							<option value='"Lucida Console", Monaco, monospace' style='font-family: "Lucida Console", Monaco, monospace;'>Lucida Console</option>
+							<option value='"Palatino Linotype", Palatino, "Book Antiqua", serif' style='font-family: "Palatino Linotype", Palatino, "Book Antiqua", serif;'>Palatino Linotype</option>
+							<option value='Roboto, sans-serif', style='font-family: "Roboto", sans-serif;'>Roboto</option>
+							<option value="Tahoma, Geneva, sans-serif" style="font-family: Tahoma, Geneva, sans-serif;">Tahoma</option>
+							<option value="'Times New Roman', Times, serif" style="font-family: 'Times New Roman', Times, serif;">Times New Roman</option>
+							<option value='"Trebuchet MS", Helvetica, sans-serif' style='font-family: "Trebuchet MS", Helvetica, sans-serif;'>Trebuchet</option>
+							<option value="Verdana, Geneva, sans-serif", style="font-family: Verdana, Geneva, sans-serif;">Verdana</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="edgeFontSize" class="displayOneLine propertyLabel nonTextFieldMenu">Size</label>
+					<div class="sizeBlock displayOneLine component_dropdown  form-group" name="edgeFontSize">
+						<select name="edgeFontSize" id="edgeFontSize" class="textEntries">
+							<option value='20'>20</option>
+							<option value='24'>24</option>
+							<option value='28'>28</option>
+							<option value='32'>32</option>
+							<option value='36'>36</option>
+							<option value='40'>40</option>
+							<option value='44'>44</option>
+							<option value='48'>48</option>
+							<option value='52'>52</option>
+							<option value='56'>56</option>
+							<option value='60' selected>60</option>
+							<option value='64'>64</option>
+							<option value='68'>68</option>
+							<option value='72'>72</option>
+							<option value='76'>76</option>
+							<option value='80'>80</option>
+						</select>
+					</div>
+					<div class="buttonContainer displayOneLine" >
+						<div class="form-check-inline nonTextFieldMenu">
+							<input type="checkbox" class="btn-check" id="edgeBold" autocomplete="off">
+							<label class="btn bui" for="edgeBold">B</label>
+						</div>
+						<div class="form-check-inline  nonTextFieldMenu">
+							<input type="checkbox" class="btn-check" id="edgeUnderline" autocomplete="off">
+							<label class="btn bui" for="edgeUnderline"><u>U</u></label>
+						</div>
+						<div class="form-check-inline  nonTextFieldMenu">
+							<input type="checkbox" class="btn-check" id="edgeItalic" autocomplete="off">
+							<label class="btn bui" for="edgeItalic" ><i>I</i></label>
+						</div>
+					</div>
+				</div>
+			</form>
+			<div class="form-group nonTextFieldMenu">
+				<label for="hue">
+					Connector Color
+				</label>
+				<div class="component_slider" name="edgeColor">
+					<img draggable="false" class="component_slider_graphic" src="css/sliders/labelColors.png" alt="Color options" />
+					<img draggable="false" class="component_slider_pointer" src="css/sliders/slider_pointer_up.png" alt="Color pointer" />
+				</div>
+			</div>
+			<div class="form-group nonTextFieldMenu">
+				<label for="transparency">
+					Opacity:
+				</label>
+				<input class="textEntries number component_input " type="number" name="transparency"/>
+				<span class="percentage">%</span>
+				<span class="component_inputInvalidMessageHidden component_inputInvalidText" id="transparencyMessage"></span>
+			</div>
+			<div class="form-group nonTextFieldMenu">
+				<label for="edgeSpeed">
+					Speed of Travel:
+					<span  class="d-inline-block" tabindex="0" data-toggle="tooltip" title="The speed of travel is purely for making the simulation visually more pleasing,
+						work items are actually passed into the next node's queue or WIP immediately, there is no hand-off time in between nodes.">
+						<i class="bi bi-info-circle infoIcon" style="pointer-events: none;"></i>
+					</span> 
+				</label>
+				<input class="textEntries number component_input " type="number" name="edgeSpeed"/>	
+				<div id="speedofTravelInfo">(1 being slowest, 100 being fastest)</div>
+			</div>
+
+			<div class = 'deleteContainer'>
+				<button class="component_button delete nonTextFieldMenu" onclick="loopy.sidebar.deleteActiveComponent();">Delete Arrow</button>
+			</div>
+		</div>
+
+		<!-- Label sidebar properties -->
+		<div id="sidebar_label" class="advanced scroll">
+			<button class="nonTextFieldMenu component_button pinned-top" onclick="loopy.sidebar.goBackToTop();">Back to Main</button>
+			<div class="menuHeader nonTextFieldMenu" name="labelTitleBox">Text Menu</div>
+			<form onsubmit="return false;">
+				<div class="form-group nonTextFieldMenu">
+					<label for="text">
+						Text
+					</label>
+					<textarea class="component_textarea textEntries " type="text" name="text" value="..."></textarea>
+				</div>
+				<div class="form-group nonTextFieldMenu">
+					<label for="labelFontSelection">
+						Font Selection
+					</label>
+					<div class="component_dropdown " name="labelFontSelection">
+						<select name="labelFontSelection" id="labelFontSelection" class="textEntries">
+							<option value="'Comic Sans MS', cursive" style="font-family: 'Comic Sans MS', cursive;">Comic Sans</option>
+							<option value="Courier, monospace" style="font-family: Courier, monospace;">Courier</option>
+							<option value="Fredoka", style="font-family: Fredoka, sans-serif;">Fredoka</option>
+							<option value="Georgia, serif" style="font-family: Georgia, serif;">Georgia</option>
+							<option value="Gill Sans, sans-serif" style="font-family: Gill Sans, sans-serif;">Gill Sans</option>
+							<option value="Impact, Charcoal, sans-serif", style="font-family: Impact, Charcoal, sans-serif;">Impact</option>
+							<option value='"Lucida Console", Monaco, monospace' style='font-family: "Lucida Console", Monaco, monospace;'>Lucida Console</option>
+							<option value='"Palatino Linotype", Palatino, "Book Antiqua", serif' style='font-family: "Palatino Linotype", Palatino, "Book Antiqua", serif;'>Palatino Linotype</option>
+							<option value='Roboto, sans-serif', style='font-family: "Roboto", sans-serif;'>Roboto</option>
+							<option value="Tahoma, Geneva, sans-serif" style="font-family: Tahoma, Geneva, sans-serif;">Tahoma</option>
+							<option value="'Times New Roman', Times, serif" style="font-family: 'Times New Roman', Times, serif;">Times New Roman</option>
+							<option value='"Trebuchet MS", Helvetica, sans-serif' style='font-family: "Trebuchet MS", Helvetica, sans-serif;'>Trebuchet</option>
+							<option value="Verdana, Geneva, sans-serif", style="font-family: Verdana, Geneva, sans-serif;">Verdana</option>
+						</select>
+					</div>
+				</div>
+				<div>
+					<label for="labelFontSize" class="displayOneLine propertyLabel nonTextFieldMenu">Size</label>
+					<div class="sizeBlock displayOneLine component_dropdown  form-group" name="labelFontSize">
+						<select name="labelFontSize" id="labelFontSize" class="textEntries">
+							<option value='20'>20</option>
+							<option value='24'>24</option>
+							<option value='28'>28</option>
+							<option value='32'>32</option>
+							<option value='36'>36</option>
+							<option value='40' selected>40</option>
+							<option value='44'>44</option>
+							<option value='48'>48</option>
+							<option value='52'>52</option>
+							<option value='56'>56</option>
+							<option value='60'>60</option>
+							<option value='64'>64</option>
+							<option value='68'>68</option>
+							<option value='72'>72</option>
+							<option value='76'>76</option>
+							<option value='80'>80</option>
+						</select>
+					</div>
+					<div class="buttonContainer displayOneLine" >
+						<div class="form-check-inline nonTextFieldMenu">
+							<input type="checkbox" class="btn-check" id="labelBold" autocomplete="off">
+							<label class="btn bui" for="labelBold">B</label>
+						</div>
+						<div class="form-check-inline  nonTextFieldMenu">
+							<input type="checkbox" class="btn-check" id="labelUnderline" autocomplete="off">
+							<label class="btn bui" for="labelUnderline"><u>U</u></label>
+						</div>
+						<div class="form-check-inline  nonTextFieldMenu">
+							<input type="checkbox" class="btn-check" id="labelItalic" autocomplete="off">
+							<label class="btn bui" for="labelItalic" ><i>I</i></label>
+						</div>
+					</div>
+				</div>
+				<div class="form-group nonTextFieldMenu">
+					<label for="textColor">
+						Text Color
+					</label>
+					<div class="component_slider" name="textColor">
+						<img draggable="false" class="component_slider_graphic" src="css/sliders/labelColors.png" alt="Text Color options" />
+						<img draggable="false" class="component_slider_pointer" src="css/sliders/slider_pointer_up.png" alt="Text Color pointer" />
+					</div>
+				</div>
+
+
+				<div class="form-group nonTextFieldMenu">
+					<label for="href">
+						Link to URL
+					</label>
+					<input class="textEntries component_input " type="text" name="href"/>
+				</div>
+			</form>
+			<div class = 'deleteContainer'>
+				<button class="component_button delete nonTextFieldMenu" onclick="loopy.sidebar.deleteActiveComponent();">Delete Label</button>
+			</div>
+		</div>
+		<div class="action-menu dropup" id="action_dropdown">
+			<button type="button" class="action-menu-button" data-bs-toggle="dropdown">
+				<i class="bi bi-three-dots"></i>
+			</button>
+			<ul class="dropdown-menu">
+			  <li><a class="dropdown-item" href="javascript:void(0);" onclick="window.loopy.startNew()">Start a new Value Stream</a></li>
+			  <li><a class="dropdown-item" href="javascript:void(0);" onclick='publish("export/json")'>Save as File</a></li>
+			  <li><a class="dropdown-item" href="javascript:void(0);" onclick='publish("modal",["save_link"])'>Save as Link</a></li>
+			  <li><a class="dropdown-item" href="javascript:void(0);" onclick='publish("load/file")'>Open from File</a></li>
+			  <li><a class="dropdown-item" href="javascript:void(0);" onclick='publish("modal",["urlRemoteFile"])'>Open from Link</a></li>
+			  <li><a class="dropdown-item" href="javascript:void(0);" onclick='publish("modal",["keyboardShortcuts"])'>Keyboard Shortcuts</a></li>
+			  <li><a class="dropdown-item" href="javascript:void(0);" onclick='window.open("https://forms.office.com/pages/responsepage.aspx?id=b-DkZWPyH0y-y5DeuMLZ_zt8JRLgMidNs69WYimGHfhUOVg1MzZKMUNSOEdVR0pKSFBBWFNVVUI3VS4u")'>Provide Feedback</a></li>
+			</ul>
+		</div>
+		<div id="sidebar_node_inspect" class="node-inspect scroll scroll-inspect">
+			<div class="menuHeader nonTextFieldMenu" name="inspectTitleBox">Node Inspect</div><br>
+			<div  class='inspectGrid' id="inspectBasicStats">
+				<div class="inspectPropertyLabel nonTextFieldMenu">Node Name:</div><div class='inspectPropertyValue' id="inspectName"></div>
+				<div class="inspectPropertyLabel nonTextFieldMenu">WIP:</div><div class='inspectPropertyValue' id="inspectWIP"></div>
+				<div class="inspectPropertyLabel nonTextFieldMenu">In Queue:</div><div class='inspectPropertyValue' id="inspectInQueue"></div>
+				<div class="inspectPropertyLabel nonTextFieldMenu">Capacity:</div><div class='inspectPropertyValue' id='inspectCapacity'></div>
+				<div class="inspectPropertyLabel nonTextFieldMenu">Processing Time:</div><div class='inspectPropertyValue' id="inspectProcessingTime"></div>
+				<div class="inspectPropertyLabel nonTextFieldMenu" id='inspectReturnRatioSingleNodeLabel'>Return Ratio (%C&A):</div>
+				<span  id='returnRatioTooltipSingleNode' class="d-inline-block" tabindex="0" data-bs-html="true" data-toggle="tooltip" data-bs-placement="bottom" title="">
+					<div class='inspectPropertyValue' id='inspectReturnRatioSingleNode'></div>
+				</span>
+			</div>
+			<div id='inspectReturnRatioMultiNodeLabel'>Return Ratio (%C&A):</div>
+			<div id="inspectReturnRatioMultiNode">
+				<div id='returnRatioTooltipDiv1'>
+					<span  id='returnRatioTooltip0' class="d-inline-block" tabindex="0" data-bs-html="true" data-toggle="tooltip" title="">
+						<span id="inspectReturnRatioMultiNode0"></span>
+					</span>
+					<span  id='returnRatioTooltip1' class="d-inline-block" tabindex="0" data-bs-html="true" data-toggle="tooltip" title="">
+						<span id="inspectReturnRatioMultiNode1"></span>
+					</span>
+					<span  id='returnRatioTooltip2' class="d-inline-block" tabindex="0" data-bs-html="true" data-toggle="tooltip" title="">
+						<span id="inspectReturnRatioMultiNode2"></span>
+					</span>
+					<span  id='returnRatioTooltip3' class="d-inline-block" tabindex="0" data-bs-html="true" data-toggle="tooltip" title="">
+						<span id="inspectReturnRatioMultiNode3"></span>
+					</span>
+					<span  id='returnRatioTooltip4' class="d-inline-block" tabindex="0" data-bs-html="true" data-toggle="tooltip" title="">
+						<span id="inspectReturnRatioMultiNode4"></span>
+					</span>
+				</div>
+				<div id='returnRatioTooltipDiv2'>
+					<span  id='returnRatioTooltip5' class="d-inline-block" tabindex="0" data-bs-html="true" data-toggle="tooltip" title="">
+						<span id="inspectReturnRatioMultiNode5"></span>
+					</span>
+					<span  id='returnRatioTooltip6' class="d-inline-block" tabindex="0" data-bs-html="true" data-toggle="tooltip" title="">
+						<span id="inspectReturnRatioMultiNode6"></span>
+					</span>
+					<span  id='returnRatioTooltip7' class="d-inline-block" tabindex="0" data-bs-html="true" data-toggle="tooltip" title="">
+						<span id="inspectReturnRatioMultiNode7"></span>
+					</span>
+					<span  id='returnRatioTooltip8' class="d-inline-block" tabindex="0" data-bs-html="true" data-toggle="tooltip" title="">
+						<span id="inspectReturnRatioMultiNode8"></span>
+					</span>
+					<span  id='returnRatioTooltip9' class="d-inline-block" tabindex="0" data-bs-html="true" data-toggle="tooltip" title="">
+						<span id="inspectReturnRatioMultiNode9"></span>
+					</span>
+				</div>
+			</div>
+
+			<hr class="solidSidebarDivider">
+			<div id="bottleneckStatus">
+				<span name="inspectTitleBox" class="inspectPropertyLabel">Bottleneck status:</span>
+				<div id="odometer">
+					<img id="odometerImage" src="css/icons/odometer.png" alt="odometer">
+					<img id="odometerNeedleImage" class="odometer-ani needle" src="css/icons/needle.png" alt="needle">
+				</div>
+			</div>
+
+			<div class='inspectGrid' id="inspectCalculatedStats">
+				<span class="inspectPropertyLabel nonTextFieldMenu">Time required to process items in Queue:</span>
+				<span  class="d-inline-block" tabindex="0" data-bs-html="true" data-toggle="tooltip" title="(In Queue/Capacity) * Processing time <br> Calculated in increments of full processing cycle times">
+					<i class="bi bi-info-circle infoIcon" style="pointer-events: none;"></i>
+				</span> 
+				<div class='inspectPropertyValue' id="timeInQueue"></div>
+
+				<span class="inspectPropertyLabel nonTextFieldMenu">Queue exceeds<br>Capacity by:</span>
+				<span  class="d-inline-block" tabindex="0" data-toggle="tooltip" title="In Queue / Capacity">
+					<i class="bi bi-info-circle infoIcon" style="pointer-events: none;"></i>
+				</span>
+				<div class='inspectPropertyValue' id="queueExceeds"></div>
+
+				<span class="inspectPropertyLabel nonTextFieldMenu">Avg. time a work item spends in Queue:</span>
+				<span  class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Sum of all work item's time spent in 'In Queue' / total # of work items">
+					<i class="bi bi-info-circle infoIcon" style="pointer-events: none;"></i>
+				</span>
+				<div class='inspectPropertyValue' id="avgTimeInQueue"></div>
+
+				<span class="inspectPropertyLabel nonTextFieldMenu">Utilization rate:</span>
+				<span  class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Utilized bandwidth / (Capacity * elapsed time)">
+					<i class="bi bi-info-circle infoIcon" style="pointer-events: none;"></i>
+				</span>
+				<div class='inspectPropertyValue' id='utilizationRate'></div>
+
+				<span class="inspectPropertyLabel nonTextFieldMenu">Time spent being<br>a Bottleneck:</span>
+				<span  class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Total time the node is flagged as any shade of red / total time elapsed">
+					<i class="bi bi-info-circle infoIcon" style="pointer-events: none;"></i>
+				</span>
+				<div class='inspectPropertyValue' id="bottleneckPercentage"></div>
+			</div>
+			<hr class="solidSidebarDivider">
+			<div class='inspectGrid' id="inspectCompletionCount">
+				<span class="inspectPropertyLabel nonTextFieldMenu">Completion Count:</span>
+				<span class="inspectPropertyValue" id="workItemsCompleted"></span>
+			</div>
+			<hr class="solidSidebarDivider" id="lineCountedProperty">
+
+			<div id="workAllocationTitle">Work Item Allocation</div>
+			<div class='inspectGrid' id="inspectCountedStats">
+				<span class="inspectPropertyLabel nonTextFieldMenu" id="inspectCountedProperty0"></span>
+				<div class="inspectPropertyValue" id='workItemsSent0'></div>
+				<span class="inspectPropertyLabel nonTextFieldMenu" id="inspectCountedProperty1"></span>
+				<div class="inspectPropertyValue" id='workItemsSent1'></div>
+				<span class="inspectPropertyLabel nonTextFieldMenu" id="inspectCountedProperty2"></span>
+				<div class="inspectPropertyValue" id='workItemsSent2'></div>
+				<span class="inspectPropertyLabel nonTextFieldMenu" id="inspectCountedProperty3"></span>
+				<div class="inspectPropertyValue" id='workItemsSent3'></div>
+				<span class="inspectPropertyLabel nonTextFieldMenu" id="inspectCountedProperty4"></span>
+				<div class="inspectPropertyValue" id='workItemsSent4'></div>
+				<span class="inspectPropertyLabel nonTextFieldMenu" id="inspectCountedProperty5"></span>
+				<div class="inspectPropertyValue" id='workItemsSent5'></div>
+				<span class="inspectPropertyLabel nonTextFieldMenu" id="inspectCountedProperty6"></span>
+				<div class="inspectPropertyValue" id='workItemsSent6'></div>
+				<span class="inspectPropertyLabel nonTextFieldMenu" id="inspectCountedProperty7"></span>
+				<div class="inspectPropertyValue" id='workItemsSent7'></div>
+				<span class="inspectPropertyLabel nonTextFieldMenu" id="inspectCountedProperty8"></span>
+				<div class="inspectPropertyValue" id='workItemsSent8'></div>
+				<span class="inspectPropertyLabel nonTextFieldMenu" id="inspectCountedProperty9"></span>
+				<div class="inspectPropertyValue" id='workItemsSent9'></div>
+			</div>
+		</div>
+	</div>
+	<div id="sidebarSwitch">
+		<span class="show-close">
+			<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-bar-right" viewBox="0 0 16 16">
+				<path fill-rule="evenodd" d="M6 8a.5.5 0 0 0 .5.5h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L12.293 7.5H6.5A.5.5 0 0 0 6 8Zm-2.5 7a.5.5 0 0 1-.5-.5v-13a.5.5 0 0 1 1 0v13a.5.5 0 0 1-.5.5Z"/>
+			</svg>
+		</span>
+		<span class="show-open">
+			<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-bar-left" viewBox="0 0 16 16">
+				<path fill-rule="evenodd" d="M12.5 15a.5.5 0 0 1-.5-.5v-13a.5.5 0 0 1 1 0v13a.5.5 0 0 1-.5.5ZM10 8a.5.5 0 0 1-.5.5H3.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L3.707 7.5H9.5a.5.5 0 0 1 .5.5Z"/>
+			</svg>
+		</span>
+	</div>
+
+	<!-- MODAL -->
+	<div id="modal_container" class="modal" tabindex="-1" role="dialog">
+		<div id="modal_dialog" class="modal-dialog" role="document">
+			<div id="modal" class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title"></h5>
+					<button type="button" class="close modal-close" data-dismiss="modal" aria-label="Close" id="modal_close_button">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div id="modal_page" class="modal-body"></div>
+				<div id="modal_buttons" class="modal_buttons">
+					<div class="modal-footer" id="modal_copy_url">
+						<button type="button" class="btn btn-primary" onclick="copyLink()" >Copy</button>
+					</div>
+					<div class="modal-footer" id="modal_footer">
+						<button type="button" class="btn btn-secondary modal-close" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Scripts! -->
+	<script>
+		// Supports unit testing
+		var exports = {};
+	</script>
+
+	<!-- Libraries -->
+	<script src="js/enums.js"></script>
+	<script src="js/helpers.js"></script>
+	<script src="js/vendor/minpubsub.js"></script>
+	<script src="js/vendor/lzma_worker-min.js"></script>
+	<script src="js/controls/Mouse.js"></script>
+	<script src="js/controls/Key.js"></script>
+	<script src="js/storage/injector/injector.js"></script>
+	<script src="js/storage/persist.js"></script>
+	<script src="js/Timeout.js"></script>
+	
+	<!-- Core Simulation Code -->
+	<script src="js/Loopy.js?v=5"></script>
+	<script src="js/tools/whiteboard/Whiteboard.js"></script>
+	<script src="js/tools/node/Node.js?v=3"></script>
+	<script src="js/tools/edge/Edge.js?v=2"></script>
+	<script src="js/tools/label/Label.js"></script>
+
+	<!-- Extensible features -->
+	<script src="js/storage/injector/injectors/edge.js"></script>
+	<script src="js/storage/injector/injectors/label.js"></script>
+	<script src="js/storage/injector/injectors/node.js"></script>
+	<script src="js/storage/injector/injectors/loopy.js"></script>
+	<script src="js/storage/injector/injectors/shared.js"></script>
+
+
+
+	<!-- Tools -->
+	<script src="js/ui/page/PageUI.js"></script>
+	<script src="js/ui/page/Page.js"></script>
+	<script src="js/ui/sidebar/Sidebar.js"></script>
+	<script src="js/ui/sidebar/SidebarSwitch.js"></script>
+	<script src="js/ui/toolbar/Toolbar.js"></script>
+	<script src="js/ui/toolbar/ToolbarButton.js"></script>
+	<script src="js/ui/modal/Modal.js"></script>
+	<script src="js/ui/modal/ModalIFrame.js"></script>
+	<script src="js/ui/zoom/Zoom.js"></script>
+
+	<script src="js/ui/sidebar/pages/SidebarPage.js"></script>
+	<script src="js/ui/sidebar/components/Component.js"></script>
+	<script src="js/ui/sidebar/components/ComponentInput.js"></script>
+	<script src="js/ui/sidebar/components/ComponentSlider.js"></script>
+	<script src="js/ui/sidebar/components/ComponentDropdown.js"></script>
+	<script src="js/ui/sidebar/components/ComponentButton.js"></script>
+	<script src="js/ui/sidebar/components/ComponentHTML.js"></script>
+	<script src="js/ui/sidebar/components/ComponentOutput.js"></script>
+
+	<script src="js/tools/ink/Ink.js"></script>
+	<script src="js/tools/dragger/Dragger.js"></script>
+	<script src="js/tools/eraser/Eraser.js"></script>
+	<script src="js/tools/label/Labeller.js"></script>
+	<script src="js/tools/redo/Redo.js"></script>
+	<script src="js/tools/undo/Undo.js"></script>
+	<script src="js/tools/undo/Actions.js"></script>
+ 
+	<!-- Start it -->
+	<script>
+	window.onload = function(){
+		window.loopy = new Loopy();
+	};
+
+	// ToolTip Initialize 
+	$(document).ready(function(){
+ 			$('[data-toggle="tooltip"]').tooltip();
+	});
+	</script>
+
+	<!-- Google tag (gtag.js) - for Google Analytics --> 
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-LN0TNBJKEP"></script> 
+	<script> 
+		window.dataLayer = window.dataLayer || []; 
+
+		function gtag(){
+			dataLayer.push(arguments);
+		} 
+
+		gtag('js', new Date()); 
+		gtag('config', 'G-LN0TNBJKEP');
+	</script>
+
+</body>
+</html>

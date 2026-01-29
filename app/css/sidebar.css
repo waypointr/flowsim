@@ -1,0 +1,477 @@
+body.sidebar-open #sidebar {
+    right: 0;
+}
+body.sidebar-closed #sidebar {
+    right: -350px;
+}
+
+body.sidebar-open #sidebarSwitch span.show-close { display: inline-block; }
+body.sidebar-open #sidebarSwitch span.show-open { display: none; }
+body.sidebar-closed #sidebarSwitch span.show-close { display: none; }
+body.sidebar-closed #sidebarSwitch span.show-open { display: inline-block; }
+
+body.sidebar-open #canvasses, body.sidebar-open #sidebarSwitch {
+    right: 300px;
+}
+body.sidebar-closed #canvasses, body.sidebar-closed #sidebarSwitch {
+    right: 0;
+}
+
+#sidebarSwitch{
+	position: absolute;
+	top:45%; right: 300px;
+	padding: 12px 10px;
+	line-height: 30px;
+	width: 30px;
+	text-align: center;
+	vertical-align: middle;
+	background-color: #eaeaea;
+	cursor: pointer;
+}
+#sidebarSwitch:hover{
+	background-color: #ccc;
+}
+#sidebar{
+	position: absolute;
+	overflow: hidden;
+	top:0; right:0;
+	width: 300px;
+	height: 100%;
+	background: #ddd;
+	font-weight: 100;
+	font-size: 17px;
+
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	border-radius: 50px;
+
+}
+.globalLoopyFirstItem{margin-top: -20px;}
+#sidebar > div{
+	margin: 25px;
+	padding-top: 20px;
+}
+#sidebar > div > div{
+	margin-bottom: 20px;
+}
+
+#sidebar .mini_button{
+	background: #999;
+	color: #fff;
+	padding: 3px 5px;
+	font-size: 16px;
+
+	cursor: pointer;
+}
+#sidebar .mini_button:hover{
+	background: #aaa;
+}
+
+#sidebar hr{
+	border: none;
+	border-bottom: 2px solid rgba(150,150,150,0.5);
+	margin: 30px -25px;
+}
+
+#sidebar form {
+    padding-top: 20px;
+}
+#sidebar .component_button.pinned-top{
+	position: absolute;
+	top:0; 
+    left:0; 
+    right: 0;
+	background: #222;
+    border-radius: 0;
+    color: #888;
+	z-index: 10;
+}
+#sidebar .component_button.pinned-top:hover{
+	background: #333;
+}
+#sidebar .component_button.delete {
+    margin-top: 20px;
+	padding: 2px;
+	border-style: none;
+	min-width: 0px;
+	width: 60%;
+	margin-left: auto;
+	margin-right: auto;
+	
+}
+#sidebar div.form-group {
+    padding:10px 0;
+}
+#sidebar label {
+    width: fit-content;
+    font-weight: bold;
+}
+#sidebar label a.docLink {
+    float:right;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 24px;
+	text-decoration: none;
+	cursor: pointer;
+	margin: 0;
+	padding: 0;
+}
+#sidebar label a.docLink:hover{
+    transform: scale(2);
+}
+
+#sidebar .nonTextFieldMenu{
+	font-family: 'Fredoka', sans-serif;
+	font-size: 14pt;
+	font-weight: bold;
+}
+
+#sidebar .textEntries{
+	font-family: 'Open Sans', sans-serif;
+	font-size: 12pt;
+	font-weight: 100;
+}
+
+.tooltip-inner{
+	background-color: white;
+	color: black;
+	max-width: 220px !important;
+	font-size: 10pt;
+	line-height: 1.25;
+	border: 1px solid black;
+}
+
+.tooltip.show {
+    opacity: 1;
+}
+
+
+
+#sidebar .infoIcon{
+	vertical-align: top;
+	font-size: 10pt;
+}
+
+#sidebar .menuHeader{
+	font-size: 24pt;
+	text-align: center;
+	padding-top: 10px;
+	margin: 0;
+
+}
+
+#sidebar .solidSidebarDivider{
+	display: flex;
+	border-top: 3px solid black;
+	margin-left: 1%;
+	margin-right: 1%;
+	justify-content: center;
+}
+
+
+#sidebar .deleteContainer {
+	display: flex;
+	justify-content: center;
+}
+
+#sidebar .percentage {
+	font-weight: normal;
+}
+#sidebar div.action-menu {
+	position: absolute;
+	bottom: -25px;
+	right: 10px;
+}
+
+#sidebar button.action-menu-button {
+	border-radius: 5px;
+	height: 24px;
+}
+
+#sidebar button.action-menu-button i.bi-three-dots {
+	display: inline-block;
+	margin-top: -12px;
+	font-size: 32px;
+}
+
+#sidebar div.action-menu ul.dropdown-menu {
+	--bs-dropdown-link-hover-color: #212529;
+	--bs-dropdown-link-hover-bg: transparent;
+	--bs-dropdown-link-active-color: #212529;
+	--bs-dropdown-link-active-bg: transparent;
+}
+
+#sidebar select{
+	display: flex;
+	width: 100%;
+	height: 31px;
+	margin: 0;
+	padding: 0;
+	border: 1px solid black;
+}
+
+#sidebar .displayOneLine{
+	display: inline-flex;
+	width: auto;
+}
+
+#sidebar .sizeBlock{
+	width: 70px;
+	margin-right: 15px;
+}
+
+#sidebar .indicatorImage {
+	height: 16pt;
+	width: 16pt;
+	margin-right: 2pt;
+}
+
+#imageRedHigh {
+	height: 18pt !important;
+	width: 18pt !important;
+	margin-right: 0pt !important;
+}
+
+#sidebar .indicatorInput {
+	width: 75px;
+} 
+
+#sidebar .indicatorSpacing {
+	margin-top: 10px;
+}
+
+#bottleneckMessage {
+	padding-top: 20px;
+}
+
+/* Overal grid */
+.node-inspect{
+	width: 325px;
+}
+.inspectGrid{
+	display: grid;
+	grid-template-rows: auto;
+	line-height: 1.25em;
+	row-gap: 10px;
+}
+
+#inspectBasicStats {
+	grid-template-columns:60% auto;
+	padding-right: 50px;
+	margin-bottom: 0px !important;
+
+}
+/* Overall grid */
+#inspectCalculatedStats {
+	grid-template-columns:60% auto 38%;
+	width: 100%;
+}
+
+#inspectCompletionCount{
+	grid-template-columns: 60% auto;
+}
+
+#inspectCountedStats {
+	grid-template-columns:72%  auto;
+	column-gap: 6px;
+}
+
+#sidebar .inspectPropertyLabel {
+	text-align: right;
+	display: flex;
+	margin-right: 2px;
+	font-weight: 700;
+	font-size: 13pt;
+	font-family: 'PT Sans', sans-serif;
+	justify-content: end;
+}
+#inspectReturnRatioMultiNodeLabel {
+	text-align: center;
+	display: flex;
+	margin-bottom: 1px !important;
+	font-weight: 700;
+	font-size: 13pt;
+	font-family: 'PT Sans', sans-serif;
+	justify-content: center;
+}
+#inspectReturnRatioMultiNode {
+	display: flex;
+	flex-wrap: wrap;
+	font-family: 'PT Sans', sans-serif;
+	font-size: 13pt;
+	font-weight: 400;
+	justify-content: center;
+	position: relative;
+}
+
+#inspectReturnRatioMultiNode span {
+	margin-right: 10px;
+}
+
+#sidebar .inspectPropertyValue {
+	align-items: end;
+	display: flex;
+	text-align: left;
+	font-family: 'PT Sans', sans-serif;
+	font-size: 13pt;
+	font-weight: 400;
+	margin-left: 10px;
+}
+
+#workAllocationTitle {
+	justify-content: center;
+	display: flex;
+	font-family: 'PT Sans', sans-serif;
+	font-weight: 700;
+	font-size: 13pt;
+}
+
+
+#returnRatioTooltipSingleNode{
+	display: flex !important;
+	align-items: end;
+	width: 35px;
+}
+
+#sidebar_node_inspect {
+	margin-top: 0 !important;
+}
+
+.sidebar-pause {
+	width: 350px !important;
+	margin-top: 0 !important;
+}
+
+.sidebar-switch-pause {
+	right: 350px !important;
+}
+
+.btn {
+	display: flex;
+	font-size: 14pt;
+	font-weight: bold !important;
+	padding: 0px !important;
+	height: 30px;
+	width: 30px;
+	margin:0px 1px !important;
+}
+
+.btn-secondary, .btn-primary {
+	width: fit-content;
+}
+
+.bui {
+	width: 30px !important;
+	justify-content: center;
+}
+
+.btn-check:checked+.btn {
+	background: #aaa !important;
+	outline: none !important;
+	border: none;
+}
+
+.form-check-inline {
+	padding: 0px;
+	margin: 0px;
+}
+
+.generate {
+	font-size: 12pt;
+}
+
+
+#sidebar #bottleneckStatus{
+	position: relative;
+	width: fit-content;
+	display: flex;
+	left: 50px;
+}
+
+#sidebar #odometer{
+	position: relative;
+	width: fit-content;
+	bottom: 15px;
+}
+
+#sidebar #odometerImage{
+	position: absolute;
+	width: 75px;
+	left: 5px;
+}
+
+#sidebar #odometerNeedleImage{
+	position: absolute;
+	width: 8px;
+	left: 39px;
+	top: 7px;
+}
+
+#speedofTravelInfo{
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight: normal;
+	font-size: 9pt;
+	text-align: left;
+	position: relative;
+	left: 11px;
+	width: fit-content;
+	margin-top: 5px;
+}
+
+ .needle {
+	transform: rotate(-90deg);
+	-ms-transform: rotate(-90deg); /*IE 9*/
+	-webkit-transform: rotate(-90deg); /*safari 3-8*/
+	transform-origin: 4px 30px;
+  } 
+
+
+@keyframes greenAni {
+	0% {
+		transform: rotate(-90deg);
+	}
+	100% {
+		transform: rotate(-75deg);
+	}
+}
+
+@keyframes yellowAni {
+	0% {
+		transform: rotate(-90deg);
+	}
+	100% {
+		transform: rotate(-38deg);
+	}
+}
+
+@keyframes redLowAni {
+	0% {
+		transform: rotate(-90deg);
+	}
+	100% {
+		transform: rotate(2deg);
+	}
+}
+
+@keyframes redMediumAni {
+	0% {
+		transform: rotate(-90deg);
+	}
+	100% {
+		transform: rotate(39deg);
+	}
+}
+
+@keyframes redHighAni {
+	0% {
+		transform: rotate(-90deg);
+	}
+	95% {
+		transform: rotate(73deg);
+	}
+	100% {
+		transform: rotate(75deg);
+	}
+}

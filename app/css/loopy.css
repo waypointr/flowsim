@@ -1,0 +1,144 @@
+body{
+	margin:0;
+	background: #fff;
+
+	font-family: Helvetica, Arial, sans-serif;
+	font-weight: normal;
+	font-size: 20px;
+
+	overflow: hidden;
+}
+
+html, body {
+	overscroll-behavior-x: none;
+}
+
+canvas{
+	position:absolute;
+	top:0; left:0;
+}
+
+#canvasses{
+	position:absolute;
+	top:0; left:0; right: 300px;
+	height: 100%;
+}
+#canvasses[fullscreen=yes]{
+	width: 100%;
+}
+#canvasses[cursor=ink]{
+	cursor: url('cursors/ink.png') 0 30, auto;
+}
+#canvasses[cursor=drag]{
+	cursor: url('cursors/drag.png') 15 15, auto;
+}
+#canvasses[cursor=erase]{
+	cursor: url('cursors/erase.png') 5 25, auto;
+}
+#canvasses[cursor=label]{
+	cursor: url('cursors/label.png') 15 15, auto;
+}
+
+.advanced .simpleOnly,
+.simpleOnly.inactive
+{
+	display: none;
+}
+.adv, .colorLogic,
+.advanced .adv.colorLogic
+{
+	display: none;
+}
+.advanced .adv,
+.advanced.colorLogicMode .adv.colorLogic
+{
+	display: block;
+}
+.scroll{
+	overflow-x: hidden;
+	overflow-y: auto;
+	width: 275px;
+	padding-right: 10px;
+	height: 90%;
+	display: block;
+}
+.scroll-inspect {
+	height: 97%;
+}
+.scroll::-webkit-scrollbar {
+	background: none;
+	border-radius: 10px;
+	width: 12px;
+ }
+ .scroll::-webkit-scrollbar-track-piece:end {
+    background: transparent;
+    margin-bottom: 10px; 
+}
+
+.scroll::-webkit-scrollbar-track-piece:start {
+    background: transparent;
+    margin-top: 30px;
+}
+ .scroll::-webkit-scrollbar-thumb {
+	background-color: gray; /* Set the color of the thumb */
+	border-radius: 10px;
+ }
+
+.adv_disclaimer, .colorLogic_disclaimer {
+	display: none;
+	color: #b84;
+	font-size: 80%;
+}
+.simple .adv.active,
+.colorAestheticMode .adv.colorLogic.active
+{
+	display: block;
+	border: 1px dashed #b84;
+	background-image: linear-gradient(to bottom,#fed 0,#fed 20px,#ddd 20px);
+	margin: -9px;
+	padding: 8px;
+	padding-top: 2px;
+}
+.colorAestheticMode .adv.colorLogic.active {
+	border: 1px dashed #b44;
+	background: #fdd; /*linear-gradient(to bottom,#fdd 0,#fdd 20px,#ddd 20px);*/
+}
+.colorLogic_disclaimer {color: #b44;}
+.simple .adv.active>.adv_disclaimer,
+.colorAestheticMode .adv.colorLogic.active>.colorLogic_disclaimer
+{display: block;}
+
+.valueStreamName {
+	text-align: center;
+	padding: 10px;
+	display: none;
+	position: absolute;
+	right: 1.5%;
+	top: 3%;
+	background-color: white;
+	z-index: 1000;
+	user-select: none;
+	white-space: nowrap;
+}
+
+.valueStreamName h3 {
+	font-size: 25px;
+}
+
+.nodeInspectOpen {
+	right: 350px;
+}
+
+.valueStreamNameModalOpen {
+	z-index: 0;
+}
+
+.logo {
+	width: 13%;
+	position: fixed;
+	left: 5%;
+	bottom: 5%;
+	opacity: 30%;
+	user-select: none;
+	-webkit-user-drag: none;
+}
