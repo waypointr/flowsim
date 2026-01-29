@@ -97,7 +97,7 @@ function Loopy(config) {
 
     // set the tab title
     if (!self.valueStreamName) {
-        document.title = "VSiM";
+        document.title = "FlowSim";
     }
 
     /// ///////
@@ -350,7 +350,7 @@ function Loopy(config) {
     subscribe('export/json', () => {
         const element = document.createElement('a');
         element.setAttribute('href', `data:text/plain;charset=utf-8,${serializeToHumanReadableJson()}`);
-        element.setAttribute('download', 'system_whiteboard.vsim.json');
+        element.setAttribute('download', 'system_whiteboard.FlowSim.json');
 
         element.style.display = 'none';
         document.body.appendChild(element);

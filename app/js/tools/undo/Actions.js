@@ -151,7 +151,7 @@ function Actions(loopy) {
 
         // update the title
         if (loopy.valueStreamNameInput == '') {
-            document.title = 'VSiM';
+            document.title = 'FlowSim';
         }
         else {
             document.title = loopy.valueStreamNameInput;

@@ -323,11 +323,11 @@ function Modal(loopy) {
         page.width = 560;
         page.height = 265;
         const desc = page.addComponent(new ComponentHTML({
-            html: `Upload your .vsim.json file into a website (with CORS header allowing ${location.host}) then add it url to this one :`,
+            html: `Upload your .FlowSim.json file into a website (with CORS header allowing ${location.host}) then add it url to this one :`,
         }));
         desc.dom.style.fontSize = '15px';
         const output = page.addComponent(new ComponentOutput({}));
-        output.output(`${location.href.split('?')[0].split('#')[0]}?url=https://where_your_uploaded_file_is_located/your_file.vsim`);
+        output.output(`${location.href.split('?')[0].split('#')[0]}?url=https://where_your_uploaded_file_is_located/your_file.FlowSim`);
 
         const label = document.createElement('div');
         label.style.fontSize = '15px';
