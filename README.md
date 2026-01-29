@@ -1,6 +1,6 @@
-### [VSiM - a tool for thinking in systems](http://flowsim.ai)
+### [FlowSim - a tool for thinking in systems](https://flowsim.waypointr.com)
 
-Originally forked from an open source project, and maintained by the NTT Product Incubator.
+Originally forked from an open source project, and maintained by Waypointr.
 
 ### Icons from Flaticon:
 
